@@ -11,7 +11,7 @@
 '! Display the data stored in the given variable. Primitive data types are
 '! displayed "as is". Structured data types (mainly arrays and dictionaries)
 '! are expanded. Objects other than dictionaries are represented by their
-'! respective type names.
+'! respective type names without further introspection.
 '!
 '! @param  var    The variable to display.
 '! @param  indent Level of indention.
