@@ -6,7 +6,7 @@
 '! were wondering).
 '!
 '! @author  Ansgar Wiechers <ansgar.wiechers@planetcobalt.net>
-'! @date    2010-12-29
+'! @date    2010-12-31
 '! @version 1.1
 
 ' This program is free software; you can redistribute it and/or
