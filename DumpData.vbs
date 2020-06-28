@@ -6,8 +6,8 @@
 '! were wondering).
 '!
 '! @author  Ansgar Wiechers <ansgar.wiechers@planetcobalt.net>
-'! @date    2010-12-31
-'! @version 1.1
+'! @date    2020-06-28
+'! @version 1.2
 
 ' This program is free software; you can redistribute it and/or
 ' modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
 '! arrays and dictionaries) are expanded. Objects other than dictionaries are
 '! represented by their respective type names without further introspection.
 '!
-'! @param  var    The variable to display.
+'! @param  var    The data structure to display.
 '! @return A string representation of the data stored in the given variable.
 '!
 '! @raise  Unknown primitive data type (23)
@@ -39,7 +39,7 @@ End Function
 '! Worker function to recursively generate the printable representation of
 '! the given variable.
 '!
-'! @param  var    The variable to display.
+'! @param  var    The data structure to display.
 '! @param  indent Level of indention.
 '! @return A string representation of the data stored in the given variable.
 '!
@@ -70,29 +70,24 @@ Private Function RDump(var, indent)
 					Next
 					data = data & String(indent, vbTab) & "}"
 				End If
-			Case "CArray"
-				' handle my wrapper class for arrays
-				' <http://www.planetcobalt.net/download/CArray-1.0.zip>
-				RDump(var.ToArray, indent)
+			Case "ArrayList", "CArray"
+				' handle known array type objects, like System.Collections.ArrayList
+				' and CArray (my wrapper class for VBscript arrays)
+				data = data & RDump(var.ToArray, indent)
 			Case Else
 				data = data & "<" & TypeName(var) & ">"
 			End Select
 		End If
 	Else
+		' primitive type (except Date, which has already been handled)
 		Select Case TypeName(var)
-		Case "Boolean"
-			If var Then
-				data = data & "True"
-			Else
-				data = data & "False"
-			End If
-		Case "Double"
+		Case "Boolean", "Integer", "Long", "Single", "Double"
 			data = data & var
-		Case "Integer"
-			data = data & var
+		Case "Byte"
+			data = data & Right("00" & Hex(var), 2)
 		Case "String"
 			data = data & """" & var & """"
-		Case "Variant()"
+		Case "Variant()", "Byte()"
 			If UBound(var) < 0 Then
 				data = data & "[]"
 			Else
